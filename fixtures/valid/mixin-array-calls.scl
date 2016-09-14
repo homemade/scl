@@ -1,0 +1,5 @@
+@arrayMixin($arr0, $arr1=[4,5,6])
+    a0 = $arr0
+    a1 = $arr1
+
+arrayMixin([1,2,3])

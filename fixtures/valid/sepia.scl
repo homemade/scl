@@ -1,0 +1,37 @@
+@model($modelName)
+    @hook($trigger)
+        @serviceFunction($service, $function)
+            service $service
+                function = $function
+
+        hook $trigger
+            __body__()
+
+    @field($fieldName)
+
+        @required($message)
+            validation "required"
+                message = $message
+
+        @validation($ruleName) 
+            validation $ruleName
+                __body__()
+
+        field $fieldName
+            __body__()
+
+    model $modelName 
+        __body__()
+
+$modelName = "SomeModelIMadeUp"
+$lambdaInstance = "someLambdaInstance"
+
+model($modelName)
+    field("someFieldInMyModel")
+        required("This field is required")
+        validation("myValidationRule")
+        hook("ui:after-validation")
+            serviceFunction($lambdaInstance, "myFunction")
+
+    hook("model:before-create")
+        serviceFunction($lambdaInstance, "mySaveFunction")

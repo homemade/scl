@@ -1,0 +1,9 @@
+@mixin($var0, $var1=1, $var2=_)
+    $var2 ?= 2
+    var0 = $var0
+    var1 = $var1
+    var2 = $var2
+
+mixin(0)
+mixin(1,2,3)
+

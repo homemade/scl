@@ -1,0 +1,3 @@
+@myMixin($v1,v2)
+    someLiteral = $v1
+

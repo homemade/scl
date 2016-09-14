@@ -1,0 +1,19 @@
+$arg1 = "world"
+
+@myFirstMixin($v2)
+    wrapper
+        someOtherLiteral = $v2
+        __body__()
+
+@mySecondMixin($v1,$v2)
+    @myInnerMixin($someArg)
+        someArg = $someArg
+    outer
+        someLiteral = $v1
+        myFirstMixin($v2)
+            nestedLiteral = $v2
+        __body__()
+
+mySecondMixin("hello",$arg1)
+    myCustomLiteral = "something"
+    myInnerMixin("else")

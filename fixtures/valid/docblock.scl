@@ -1,0 +1,36 @@
+/*
+  this is a document block
+
+  ```
+  code
+  ```
+*/
+@mixin()
+    /*
+       This has nothing to do with a mixin
+    */
+    something = "thus"
+
+    /*
+       part 1
+    */
+    /*
+      part 2
+    */
+    @inside0($var)
+
+    // line comments should be ignored
+    @inside1($var, $var2)
+
+    /* 
+       this should be ignored 
+    */
+    @_ignore()
+
+@mixin2($var)
+    /*
+       This isn't a mixin, so it should be ignored
+    mixin()
+        /*
+            This is a mixin inside mixin2
+        @inside0($var)

@@ -1,0 +1,4 @@
+@validMixin($arg1,$arg2)
+    output = $arg1
+
+validMixin("1","2","3")

@@ -1,0 +1,4 @@
+@mixin($arg)
+    var = "$arg"
+
+mixin($myArg)

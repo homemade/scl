@@ -1,0 +1,8 @@
+@mixin()
+    __body__()
+
+mixin:
+    hello = 123
+
+mixin
+    hello = 456

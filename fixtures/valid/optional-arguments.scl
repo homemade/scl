@@ -1,0 +1,6 @@
+@mixin($required, $optional = "default")
+    required = $required
+    optional = $optional
+
+mixin("1")
+mixin("2","non-default")

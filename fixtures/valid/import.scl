@@ -1,0 +1,3 @@
+include("fixtures/valid/basic", "fixtures/valid/simple-mixin")
+
+simpleMixin("this is from simpleMixin")

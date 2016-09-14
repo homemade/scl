@@ -1,0 +1,4 @@
+wrapper
+  inner = "yes"
+  another = "1"
+    yet_another = "123"

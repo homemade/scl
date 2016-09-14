@@ -1,0 +1,24 @@
+@base($var)
+    $_member := $var
+    @fn1()
+        fn1 = $_member
+    @fn2()
+        fn1()
+    @overloadable()
+        fn1()
+        base = "this won't be used"
+    __body__()
+
+@extendedBase($myVar)
+    base($myVar)
+       @overloadable()
+            base = "this is from the overloader"
+       fn2()
+       overloadable() 
+
+       // This uses the $_member var from @base() !
+       mything = $_member
+
+extendedBase(1)
+extendedBase(2)
+

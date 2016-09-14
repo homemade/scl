@@ -1,0 +1,28 @@
+$myVar1 = hello
+$myVar2 = world
+$myVar3 = "$myVar1 $myVar2"
+$myVar4 = "parent value"
+
+outer "normal assignment"
+    inner1 = "$myVar1"
+    inner2 = $myVar3
+
+outer "scope-specific re-assignment should affect parent scope"
+   $myVar3 = "$myVar2 $myVar1" 
+   inner = $myVar3
+
+outer "parent scope affected"
+   inner = $myVar3
+
+outer "new declaration"
+    $myVar4 := "something"
+    inner = $myVar4
+
+origin = $myVar4
+
+// Conditional assignments
+$exists ?= "http://localhost" // This is a comment
+t1 = $exists
+
+$exists ?= 456
+t2 = $exists
