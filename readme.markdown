@@ -1,4 +1,4 @@
-http://go-lint.appspot.com/bitbucket.org/homemade/scl
+[![GoDoc](https://godoc.org/bitbucket.org/homemade/scl?status.svg)](https://godoc.org/bitbucket.org/homemade/scl)
 
 ## Sepia Configuration Language
 
