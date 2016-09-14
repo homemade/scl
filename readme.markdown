@@ -1,3 +1,5 @@
+http://go-lint.appspot.com/bitbucket.org/homemade/scl
+
 ## Sepia Configuration Language
 
 SCL is a simple, declarative, semi-functional language that extends
