@@ -12,6 +12,10 @@ type diskFileSystem struct {
 	basePath string
 }
 
+/*
+NewDiskSystem creates a filesystem that uses the local disk, at an optional
+base path. The default base path is the current working directory.
+*/
 func NewDiskSystem(basePath ...string) FileSystem {
 
 	base := ""

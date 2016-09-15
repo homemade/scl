@@ -37,11 +37,11 @@ func (s *scanner) scan() (lines scannerTree, err error) {
 	scanner := bufio.NewScanner(s.reader)
 	scanner.Split(bufio.ScanLines)
 
-	line_number := 0
-	raw_lines := make(scannerTree, 0)
+	lineNumber := 0
+	rawLines := make(scannerTree, 0)
 
 	for scanner.Scan() {
-		line_number++
+		lineNumber++
 
 		text := strings.TrimRight(scanner.Text(), " \t{}")
 
@@ -49,13 +49,13 @@ func (s *scanner) scan() (lines scannerTree, err error) {
 			continue
 		}
 
-		raw_lines = append(raw_lines, newLine(s.file, line_number, 0, text))
+		rawLines = append(rawLines, newLine(s.file, lineNumber, 0, text))
 	}
 
 	// Make sure the first line has no indent
-	if len(raw_lines) > 0 {
+	if len(rawLines) > 0 {
 		index := 0
-		s.indentLines(&index, raw_lines, &lines, raw_lines[0].content.indent())
+		s.indentLines(&index, rawLines, &lines, rawLines[0].content.indent())
 	}
 
 	return
@@ -68,20 +68,20 @@ func (s *scanner) indentLines(index *int, input scannerTree, output *scannerTree
 		return
 	}
 
-	var line_to_add *scannerLine
+	var lineToAdd *scannerLine
 
 	for ; *index < len(input); *index++ {
 
-		line_indent := input[*index].content.indent()
+		lineIndent := input[*index].content.indent()
 
-		if line_indent == indent {
-			line_to_add = input[*index].branch()
-			*output = append(*output, line_to_add)
+		if lineIndent == indent {
+			lineToAdd = input[*index].branch()
+			*output = append(*output, lineToAdd)
 
-		} else if line_indent > indent {
-			s.indentLines(index, input, &line_to_add.children, line_indent)
+		} else if lineIndent > indent {
+			s.indentLines(index, input, &lineToAdd.children, lineIndent)
 
-		} else if line_indent < indent {
+		} else if lineIndent < indent {
 			*index--
 			return
 		}

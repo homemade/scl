@@ -8,13 +8,11 @@ import (
 	"github.com/hashicorp/hcl"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"sepia/file"
 )
 
 func newMockParser(t *testing.T) *parser {
 
-	p0, err := NewParser(file.NewDiskSystem())
+	p0, err := NewParser(NewDiskSystem())
 	require.Nil(t, err)
 
 	p := p0.(*parser)

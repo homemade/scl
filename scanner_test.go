@@ -27,8 +27,8 @@ func Test_CreateScannerReturnsNonNil(t *testing.T) {
 func Test_ScannerLoadsInputIntoTokensGivenValidInput(t *testing.T) {
 
 	for cycle, v := range []struct {
-		file          string
-		expected_tree scannerTree
+		file         string
+		expectedTree scannerTree
 	}{
 		{
 			file: `
@@ -42,7 +42,7 @@ func Test_ScannerLoadsInputIntoTokensGivenValidInput(t *testing.T) {
                     value = $value
                     label = $label
 `,
-			expected_tree: scannerTree{
+			expectedTree: scannerTree{
 				&scannerLine{line: 2, column: 0, content: "@field($name, $label)", children: []*scannerLine{
 					&scannerLine{line: 3, column: 4, content: "field $name", children: []*scannerLine{
 						&scannerLine{line: 4, column: 8, content: "label = $label"},
@@ -70,7 +70,7 @@ func Test_ScannerLoadsInputIntoTokensGivenValidInput(t *testing.T) {
 				}
 		}	
 }`,
-			expected_tree: scannerTree{
+			expectedTree: scannerTree{
 				&scannerLine{line: 2, column: 0, content: "@field($name, $label)", children: []*scannerLine{
 					&scannerLine{line: 3, column: 4, content: "field $name", children: []*scannerLine{
 						&scannerLine{line: 4, column: 8, content: "label = $label"},
@@ -90,6 +90,6 @@ func Test_ScannerLoadsInputIntoTokensGivenValidInput(t *testing.T) {
 		lex := newScanner(bytes.NewBufferString(v.file))
 		lines, err := lex.scan()
 		require.Nil(t, err)
-		compareScannerTrees(t, lines, v.expected_tree, 0)
+		compareScannerTrees(t, lines, v.expectedTree, 0)
 	}
 }
