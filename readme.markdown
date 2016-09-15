@@ -1,3 +1,5 @@
+[![GoDoc](https://godoc.org/bitbucket.org/homemade/scl?status.svg)](https://godoc.org/bitbucket.org/homemade/scl)
+
 ## Sepia Configuration Language
 
 SCL is a simple, declarative, semi-functional, self-documenting language that extends
