@@ -15,6 +15,28 @@ const (
 	noMixinParamValue   = "_"
 )
 
+/*
+A Parser takes input in the form of filenames, variables values and include
+paths, and transforms any SCL into HCL. Generally, a program will only call
+Parse() for one file (the configuration file for that project) but it can be
+called on any number of files, each of which will add to the Parser's HCL
+output.
+
+Variables and includes paths are global for all files parsed; that is, if you
+Parse() multiple files, each of them will have access to the same set of
+variables and use the same set of include paths. The parser variables are part
+of the top-level scope: if a file changes them while it's being parsed, the
+next file will have the same variable available with the changed value.
+Similarly, if a file declares a new variable or mixin on the root scope, then
+the next file will be able to access it. This can become confusing quickly,
+so it's usually best to parse only one file and let it explicitly include
+and other files at the SCL level.
+
+SCL is an auto-documenting language, and the documentation is obtained using
+the Parser's Documentation() function. Only mixins are currently documented.
+Unlike the String() function, the documentation returned for Documentation()
+only includes the nominated file.
+*/
 type Parser interface {
 	Parse(fileName string) error
 	Documentation(fileName string) (MixinDocs, error)
@@ -31,6 +53,11 @@ type parser struct {
 	includePaths []string
 }
 
+/*
+NewParser creates a new, standard Parser given a FileSystem. The most common FileSystem is
+the DiskFileSystem, but any will do. The parser opens all files and reads all
+includes using the FileSystem provided.
+*/
 func NewParser(fs FileSystem) (Parser, error) {
 
 	p := &parser{

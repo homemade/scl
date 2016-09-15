@@ -230,11 +230,9 @@ func (t *tokeniser) tokeniseShortFunctionCall(l *scannerLine, content lineConten
 		return []token{
 			token{kind: tokenFunctionCall, content: parts[1], line: l},
 		}, nil
-	} else {
-		return tokens, fmt.Errorf("Failed to parse short function call")
 	}
 
-	return
+	return tokens, fmt.Errorf("Failed to parse short function call")
 }
 
 func (t *tokeniser) tokeniseVariableAssignment(l *scannerLine, content lineContent) (tokens []token, err error) {
@@ -246,11 +244,9 @@ func (t *tokeniser) tokeniseVariableAssignment(l *scannerLine, content lineConte
 			token{kind: tokenVariableAssignment, content: parts[1], line: l},
 			token{kind: tokenLiteral, content: parts[2], line: l},
 		}, nil
-	} else {
-		return tokens, fmt.Errorf("Failed to parse variable assignment")
 	}
 
-	return
+	return tokens, fmt.Errorf("Failed to parse variable assignment")
 }
 
 func (t *tokeniser) tokeniseVariableDeclaration(l *scannerLine, content lineContent) (tokens []token, err error) {
@@ -262,11 +258,9 @@ func (t *tokeniser) tokeniseVariableDeclaration(l *scannerLine, content lineCont
 			token{kind: tokenVariableDeclaration, content: parts[1], line: l},
 			token{kind: tokenLiteral, content: parts[2], line: l},
 		}, nil
-	} else {
-		return tokens, fmt.Errorf("Failed to parse variable declaration")
 	}
 
-	return
+	return tokens, fmt.Errorf("Failed to parse variable declaration")
 }
 
 func (t *tokeniser) tokeniseConditionalVariableAssignment(l *scannerLine, content lineContent) (tokens []token, err error) {
@@ -278,9 +272,7 @@ func (t *tokeniser) tokeniseConditionalVariableAssignment(l *scannerLine, conten
 			token{kind: tokenConditionalVariableAssignment, content: parts[1], line: l},
 			token{kind: tokenLiteral, content: parts[2], line: l},
 		}, nil
-	} else {
-		return tokens, fmt.Errorf("Failed to parse conditional variable assignment")
 	}
 
-	return
+	return tokens, fmt.Errorf("Failed to parse conditional variable assignment")
 }

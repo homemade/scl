@@ -1,1 +1,2 @@
-/.readme.markdown.swp
+*.swp
+.DS_Store

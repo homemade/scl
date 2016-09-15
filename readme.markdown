@@ -1,6 +1,6 @@
 ## Sepia Configuration Language
 
-SCL is a simple, declarative, semi-functional language that extends
+SCL is a simple, declarative, semi-functional, self-documenting language that extends
 [HCL](https://github.com/hashicorp/hcl) in the same way that Sass extends CSS.
 What that means is, any properly formatted HCL is valid SCL. If you really
 enjoy HCL, you can keep using it exclusively: under the hood, SCL ‘compiles’ to
