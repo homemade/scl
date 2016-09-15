@@ -9,7 +9,7 @@ enjoy HCL, you can keep using it exclusively: under the hood, SCL ‘compiles’
 HCL. The difference is that now you can explicitly include files, use ‘mixins’
 to quickly inject boilerplate code, and use properly scoped, natural variables.
 
-The language is designed to accompany _Sepia_ (and, specifically, _Sepia_
+The language is designed to accompany _Sepia_ (and, outside of that, _Sepia_
 plugins) but it's a general purpose language, and can be used for pretty 
 much any configurational purpose.
 
