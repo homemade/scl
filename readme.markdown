@@ -15,3 +15,33 @@ much any configurational purpose.
 
 There is full [documentation](http://sepia-docs.us-east-1.elasticbeanstalk.com/scl)
 for SCL available at on the _Sepia_ documentation site.
+
+## SCL CLI Tool
+
+Takes `.scl` files in, spits HCL out (via Stdout)
+
+### Installation
+
+```
+$ go get -u bitbucket.org/homemade/scl/...
+```
+
+### Usage
+
+```
+$ scl
+Usage: scl <filename.scl> [filenameX.scl...]
+```
+
+### Example
+
+```
+$ scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/basic.scl
+/* .../bitbucket.org/homemade/scl/fixtures/valid/basic.scl */
+wrapper {
+  inner = "yes"
+  another = "1" {
+    yet_another = "123"
+  }
+}
+```
