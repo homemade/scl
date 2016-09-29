@@ -10,7 +10,7 @@ HCL. The difference is that now you can explicitly include files, use â€˜mixinsâ
 to quickly inject boilerplate code, and use properly scoped, natural variables.
 
 The language is designed to accompany _Sepia_ (and, outside of that, _Sepia_
-plugins) but it's a general purpose language, and can be used for pretty 
+plugins) but it's a general purpose language, and can be used for pretty
 much any configurational purpose.
 
 There is full [documentation](http://sepia-docs.us-east-1.elasticbeanstalk.com/scl)
@@ -30,11 +30,18 @@ $ go get -u bitbucket.org/homemade/scl/...
 
 ```
 $ scl
-Usage: scl <filename.scl> [filenameX.scl...]
+Usage: scl [options] <filename.scl> [filenameX.scl...]
+  -include value
+    Dir path to include on parser, aids scl import statements
+  -no-env
+    Prevent ingesting all environmental variables into parser
+  -param value
+    Parameter to set on scl parser making it available in the global scope e.g. name=value
 ```
 
 ### Example
 
+Basic example:
 ```
 $ scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/basic.scl
 /* .../bitbucket.org/homemade/scl/fixtures/valid/basic.scl */
@@ -43,5 +50,35 @@ wrapper {
   another = "1" {
     yet_another = "123"
   }
+}
+```
+
+Adding includes:
+```
+$ scl -include $GOPATH/src/bitbucket.org/homemade/scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/import.scl
+wrapper {
+  inner = "yes"
+  another = "1" {
+    yet_another = "123"
+  }
+}
+output = "this is from simpleMixin"
+```
+
+Adding params via cli flags:
+```
+$ scl -param myVar=1 $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
+/* /Volumes/CaseSensitive/go/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
+outer {
+  inner = 1
+}
+```
+
+Adding params via environmental variables:
+```
+$ myVar=1 scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
+/* /Volumes/CaseSensitive/go/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
+outer {
+  inner = 1
 }
 ```
