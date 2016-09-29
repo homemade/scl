@@ -56,6 +56,7 @@ wrapper {
 Adding includes:
 ```
 $ scl -include $GOPATH/src/bitbucket.org/homemade/scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/import.scl
+/* .../bitbucket.org/homemade/scl/fixtures/valid/import.scl */
 wrapper {
   inner = "yes"
   another = "1" {
@@ -68,7 +69,7 @@ output = "this is from simpleMixin"
 Adding params via cli flags:
 ```
 $ scl -param myVar=1 $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
-/* /Volumes/CaseSensitive/go/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
+/* .../bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
 outer {
   inner = 1
 }
@@ -77,8 +78,17 @@ outer {
 Adding params via environmental variables:
 ```
 $ myVar=1 scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
-/* /Volumes/CaseSensitive/go/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
+/* .../bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
 outer {
   inner = 1
+}
+```
+
+Skipping environmental variable slurping:
+```
+$ myVar=1 scl -no-env -param myVar=2 $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
+/* .../src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
+outer {
+  inner = 2
 }
 ```
