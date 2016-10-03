@@ -169,7 +169,9 @@ func (p *parser) writeLiteralToOutput(scope *scope, literal string, block bool) 
 
 	} else {
 
-		if err := p.isValid(line); err != nil {
+		if err := p.isValid(line + "{}"); err == nil {
+			line = line + "{}"
+		} else if err := p.isValid(line); err != nil {
 			return err
 		}
 	}
