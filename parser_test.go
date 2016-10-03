@@ -42,6 +42,7 @@ func Test_AParserCanParseFiles(t *testing.T) {
   another {
     yet_another = "123"
   }
+  inner "no"{}
 }`,
 		},
 		{
@@ -91,6 +92,7 @@ t2 = "http://localhost"`,
   another {
     yet_another = "123"
   }
+  inner "no"{}
 }
 output = "this is from simpleMixin"`,
 		},
