@@ -39,7 +39,7 @@ func Test_AParserCanParseFiles(t *testing.T) {
 			fileName: "fixtures/valid/basic.scl",
 			hcl: `wrapper {
   inner = "yes"
-  another = "1" {
+  another {
     yet_another = "123"
   }
 }`,
@@ -88,7 +88,7 @@ t2 = "http://localhost"`,
 			fileName: "fixtures/valid/import.scl",
 			hcl: `wrapper {
   inner = "yes"
-  another = "1" {
+  another {
     yet_another = "123"
   }
 }

@@ -1,4 +1,4 @@
 wrapper
   inner = "yes"
-  another = "1"
+  another
     yet_another = "123"
