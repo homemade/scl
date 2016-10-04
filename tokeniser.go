@@ -7,7 +7,7 @@ import (
 	"unicode"
 )
 
-var commentMatcher = regexp.MustCompile(`//.+$`)
+var hashCommentMatcher = regexp.MustCompile(`#.+$`)
 var functionMatcher = regexp.MustCompile(`^([a-zA-Z0-9_]+)\s?\((.*)\):?$`)
 var shortFunctionMatcher = regexp.MustCompile(`^([a-zA-Z0-9_]+):$`)
 var variableMatcher = regexp.MustCompile(`^\$([a-zA-Z_][a-zA-Z0-9_]*)$`)
