@@ -36,6 +36,13 @@ func Test_AParserCanParseFiles(t *testing.T) {
 		variables map[string]string
 	}{
 		{
+			fileName: "fixtures/valid/comments.scl",
+			hcl: `# This should be passed through
+block {
+  value = 1
+}`,
+		},
+		{
 			fileName: "fixtures/valid/basic.scl",
 			hcl: `wrapper {
   inner = "yes"
