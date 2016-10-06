@@ -1,0 +1,8 @@
+container
+	foo = <<EOF
+bar
+    indent
+baz
+EOF
+	bar = <<DOC
+	hello
