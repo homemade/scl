@@ -2,6 +2,7 @@ package scl
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strings"
 )
@@ -40,8 +41,25 @@ func (s *scanner) scan() (lines scannerTree, err error) {
 	lineNumber := 0
 	rawLines := make(scannerTree, 0)
 
+	heredoc := ""
+	heredocContent := ""
+	heredocLine := 0
+
 	for scanner.Scan() {
 		lineNumber++
+
+		if heredoc != "" {
+			heredocContent += "\n" + scanner.Text()
+
+			if strings.TrimSpace(scanner.Text()) == heredoc {
+				// HCL requires heredocs to be terminated with a newline
+				rawLines = append(rawLines, newLine(s.file, lineNumber, 0, heredocContent+"\n"))
+				heredoc = ""
+				heredocContent = ""
+			}
+
+			continue
+		}
 
 		text := strings.TrimRight(scanner.Text(), " \t{}")
 
@@ -49,7 +67,18 @@ func (s *scanner) scan() (lines scannerTree, err error) {
 			continue
 		}
 
+		if matches := heredocMatcher.FindAllStringSubmatch(text, -1); matches != nil {
+			heredoc = matches[0][1]
+			heredocContent = text
+			heredocLine = lineNumber
+			continue
+		}
+
 		rawLines = append(rawLines, newLine(s.file, lineNumber, 0, text))
+	}
+
+	if heredoc != "" {
+		return lines, fmt.Errorf("Heredoc '%s' (started line %d) not terminated", heredoc, heredocLine)
 	}
 
 	// Make sure the first line has no indent

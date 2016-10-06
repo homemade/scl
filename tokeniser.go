@@ -16,6 +16,7 @@ var declarationMatcher = regexp.MustCompile(`^\$([a-zA-Z_][a-zA-Z0-9_]*)\s*:=\s*
 var conditionalVariableMatcher = regexp.MustCompile(`^\$([a-zA-Z_0-9]+)\s*\?=\s*(.+)$`)
 var docblockStartMatcher = regexp.MustCompile(`^/\*$`)
 var docblockEndMatcher = regexp.MustCompile(`^\*\/$`)
+var heredocMatcher = regexp.MustCompile(`<<([a-zA-Z]+)\s*$`)
 
 type tokeniser struct {
 	accruedComment []string

@@ -53,6 +53,21 @@ block {
 }`,
 		},
 		{
+			fileName: "fixtures/valid/heredoc.scl",
+			hcl: `container {
+  foo = <<EOF
+bar
+    indent
+baz
+EOF
+
+  bar = <<DOC
+	hello
+		DOC
+
+}`,
+		},
+		{
 			fileName: "fixtures/valid/variables.scl",
 			hcl: `outer {
   inner = "hello"
@@ -134,6 +149,10 @@ var2 = 3`,
 		{
 			fileName: "fixtures/valid/docblock.scl",
 			hcl:      ``,
+		},
+		{
+			fileName: "fixtures/invalid/heredoc.scl",
+			err:      fmt.Errorf("Can't scan fixtures/invalid/heredoc.scl: Heredoc 'DOC' (started line 7) not terminated"),
 		},
 		{
 			fileName: "fixtures/invalid/optional-arguments.scl",

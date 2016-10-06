@@ -93,3 +93,16 @@ func Test_ScannerLoadsInputIntoTokensGivenValidInput(t *testing.T) {
 		compareScannerTrees(t, lines, v.expectedTree, 0)
 	}
 }
+
+func Test_AScannerReportsAnErrorWhenAHeredocIsntTerminated(t *testing.T) {
+
+	input := `
+test = <<DOC
+something
+else
+`
+	lex := newScanner(bytes.NewBufferString(input))
+	_, err := lex.scan()
+	require.NotNil(t, err)
+	require.Equal(t, "Heredoc 'DOC' (started line 2) not terminated", err.Error())
+}
