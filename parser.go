@@ -486,9 +486,6 @@ func (p *parser) parseFunctionCall(branch *scannerLine, tkn *tokeniser, tokens [
 		scope.setArgumentVariable(mx.arguments[i].name, args[i])
 	}
 
-	// Make sure the mixin can't be called recursively
-	scope.removeMixin(tokens[0].content)
-
 	// Set an anchor branch for the __body__ built-in
 	scope.branch = branch
 	scope.branchScope = scope.parent

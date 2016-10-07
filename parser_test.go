@@ -68,6 +68,35 @@ EOF
 }`,
 		},
 		{
+			fileName: "fixtures/valid/recursion.scl",
+			hcl: `wrapper {
+  decl "GET" "/base/default" {
+    parent_id = 999
+  }
+  route "sub0" {
+    id = 0
+    parent_id = 999
+    decl "GET" "/base/sub0/default" {
+      parent_id = 0
+    }
+    route "sub1" {
+      id = 1
+      parent_id = 0
+      decl "GET" "/base/sub0/sub1/default" {
+        parent_id = 1
+      }
+      route "sub2" {
+        id = 2
+        parent_id = 1
+        decl "GET" "/base/sub0/sub1/sub2/default" {
+          parent_id = 2
+        }
+      }
+    }
+  }
+}`,
+		},
+		{
 			fileName: "fixtures/valid/variables.scl",
 			hcl: `outer {
   inner = "hello"
