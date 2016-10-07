@@ -1,0 +1,29 @@
+@router($root_path=root,$parent_id=0):
+
+  // Declaration can be used at any level, including root
+  @declaration($path=default,$method="GET")
+    decl $method "/$root_path/$path"
+      parent_id = $parent_id
+
+  wrapper
+    @route($path,$id=0):
+      route "$path"
+        id = $id
+        parent_id = $parent_id
+
+        // Set the path and parent ids
+        $root_path = $root_path/$path
+        $parent_id = $id
+
+        __body__()
+    __body__()
+
+// Not quite right: second route should be inside first
+router(base,999):
+  declaration:
+  route(sub0,0):
+    declaration:
+    route(sub1,1):
+      declaration:
+      route(sub2,2):
+        declaration:
