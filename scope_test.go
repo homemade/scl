@@ -28,8 +28,8 @@ func Test_AValidScopeCanInterpolateVariables(t *testing.T) {
 				"one": "value1",
 				"two": "value2",
 			},
-			literal: "$$one is $two",
-			result:  "$$one is value2",
+			literal: `\$one is $two, \\$var is escaped`,
+			result:  `$one is value2, \$var is escaped`,
 		},
 		{
 			variables: map[string]string{
