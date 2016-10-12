@@ -3,9 +3,10 @@ package scl
 import (
 	"fmt"
 	"regexp"
+	"strings"
 )
 
-var inlineVariableMatcher = regexp.MustCompile(`([^$]|^)\$([a-zA-Z0-9_]+)`)
+var inlineVariableMatcher = regexp.MustCompile(`([^$\\]|^)\$([a-zA-Z0-9_]+)`)
 
 type variable struct {
 	name  string
@@ -114,6 +115,10 @@ func (s *scope) interpolateLiteral(literal string) (outp string, err error) {
 
 		return match
 	})
+
+	// Variables with multiple leading dollars are not matched as variables.
+	// To fix this, dollar characters preceded by backslashes are escaped.
+	outp = strings.Replace(outp, `\$`, `$`, -1)
 
 	return
 }

@@ -18,7 +18,6 @@
         __body__()
     __body__()
 
-// Not quite right: second route should be inside first
 router(base,999):
   declaration:
   route(sub0,0):
