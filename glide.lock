@@ -1,8 +1,8 @@
 hash: 05a486196696bcfdee3d4e55e03c550615ec39ea2c6a0b745e71f38a145e452c
-updated: 2016-10-07T09:23:39.426456632+01:00
+updated: 2016-10-12T14:06:58.937147376+01:00
 imports:
 - name: github.com/hashicorp/hcl
-  version: ef8133da8cda503718a74741312bf50821e6de79
+  version: 6f5bfed9a0a22222fbe4e731ae3481730ba41e93
   subpackages:
   - hcl/ast
   - hcl/parser
@@ -12,6 +12,8 @@ imports:
   - json/parser
   - json/scanner
   - json/token
+- name: github.com/tucnak/climax
+  version: 4c021a579ddac03b8a085bebcb87d66c072341ef
 testImports:
 - name: github.com/davecgh/go-spew
   version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
