@@ -18,7 +18,7 @@ for SCL available at on the _Sepia_ documentation site.
 
 ## SCL CLI Tool
 
-Takes `.scl` files in, spits HCL out (via Stdout)
+Parses and writes or tests .scl files.
 
 ### Installation
 
@@ -28,22 +28,13 @@ $ go get -u bitbucket.org/homemade/scl/...
 
 ### Usage
 
-```
-$ scl
-Usage: scl [options] <filename.scl> [filenameX.scl...]
-  -include value
-    Dir path to include on parser, aids scl import statements
-  -no-env
-    Prevent ingesting all environmental variables into parser
-  -param value
-    Parameter to set on scl parser making it available in the global scope e.g. name=value
-```
+Run `scl` for a command syntax. 
 
 ### Example
 
 Basic example:
 ```
-$ scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/basic.scl
+$ scl run $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/basic.scl
 /* .../bitbucket.org/homemade/scl/fixtures/valid/basic.scl */
 wrapper {
   inner = "yes"
@@ -55,7 +46,7 @@ wrapper {
 
 Adding includes:
 ```
-$ scl -include $GOPATH/src/bitbucket.org/homemade/scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/import.scl
+$ scl run -include $GOPATH/src/bitbucket.org/homemade/scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/import.scl
 /* .../bitbucket.org/homemade/scl/fixtures/valid/import.scl */
 wrapper {
   inner = "yes"
@@ -68,7 +59,7 @@ output = "this is from simpleMixin"
 
 Adding params via cli flags:
 ```
-$ scl -param myVar=1 $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
+$ scl run -param myVar=1 $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
 /* .../bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
 outer {
   inner = 1
@@ -77,7 +68,7 @@ outer {
 
 Adding params via environmental variables:
 ```
-$ myVar=1 scl $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
+$ myVar=1 scl run $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
 /* .../bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
 outer {
   inner = 1
@@ -86,7 +77,7 @@ outer {
 
 Skipping environmental variable slurping:
 ```
-$ myVar=1 scl -no-env -param myVar=2 $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
+$ myVar=1 scl run -no-env -param myVar=2 $GOPATH/src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl
 /* .../src/bitbucket.org/homemade/scl/fixtures/valid/variables.scl */
 outer {
   inner = 2
