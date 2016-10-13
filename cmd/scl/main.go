@@ -22,7 +22,7 @@ func main() {
 	app.AddCommand(runCommand(os.Stdout, os.Stderr))
 	app.AddCommand(testCommand(os.Stdout, os.Stderr))
 
-	app.Run()
+	os.Exit(app.Run())
 }
 
 func runCommand(stdout io.Writer, stderr io.Writer) climax.Command {
