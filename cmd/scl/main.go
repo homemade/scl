@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/aryann/difflib"
 	"github.com/tucnak/climax"
@@ -89,7 +90,7 @@ func testCommand(stdout io.Writer, stderr io.Writer) climax.Command {
 			errors := 0
 
 			reportError := func(path string, err string, args ...interface{}) {
-				fmt.Fprintf(stderr, "[%s] %s\n", path, fmt.Sprintf(err, args...))
+				fmt.Fprintf(stderr, "%-7s %s %s\n", "FAIL", path, fmt.Sprintf(err, args...))
 				errors++
 			}
 
@@ -105,6 +106,7 @@ func testCommand(stdout io.Writer, stderr io.Writer) climax.Command {
 
 				fs := scl.NewDiskSystem()
 				parser, err := scl.NewParser(fs)
+				now := time.Now()
 
 				if err != nil {
 					reportError("Unable to create new parser in CWD: %s", err.Error())
@@ -128,7 +130,7 @@ func testCommand(stdout io.Writer, stderr io.Writer) climax.Command {
 				hclFile, _, err := fs.ReadCloser(hclFilePath)
 
 				if err != nil {
-					fmt.Fprintf(stdout, "[%s] No HCL file; skipping gold standard test\n", fileName)
+					fmt.Fprintf(stdout, "%-7s %s [no .hcl file]\n", "?", fileName)
 					continue
 				}
 
@@ -166,7 +168,7 @@ func testCommand(stdout io.Writer, stderr io.Writer) climax.Command {
 					continue
 				}
 
-				fmt.Fprintf(stdout, "[%s] OK\n", fileName)
+				fmt.Fprintf(stdout, "%-7s %s\t%.3fs\n", "ok", fileName, time.Since(now).Seconds())
 			}
 
 			if errors > 0 {
