@@ -17,7 +17,7 @@ import (
 func main() {
 	app := climax.New("scl")
 	app.Brief = "Scl is a tool for managing SCL soure code."
-	app.Version = "1.1.0"
+	app.Version = "1.1.1"
 
 	app.AddCommand(runCommand(os.Stdout, os.Stderr))
 	app.AddCommand(testCommand(os.Stdout, os.Stderr))
