@@ -5,10 +5,12 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
 
+	"github.com/Masterminds/vcs"
 	"github.com/aryann/difflib"
 	"github.com/tucnak/climax"
 
@@ -20,6 +22,7 @@ func main() {
 	app.Brief = "Scl is a tool for managing SCL soure code."
 	app.Version = "1.2.0"
 
+	app.AddCommand(getCommand(os.Stdout, os.Stderr))
 	app.AddCommand(runCommand(os.Stdout, os.Stderr))
 	app.AddCommand(testCommand(os.Stdout, os.Stderr))
 
@@ -31,7 +34,7 @@ func runCommand(stdout io.Writer, stderr io.Writer) climax.Command {
 	return climax.Command{
 		Name:  "run",
 		Brief: "Transform one or more .scl files into HCL",
-		Usage: `[options] <filename.scl> [filenameX.scl...]`,
+		Usage: `[options] <filename.scl...>`,
 		Help:  `Transform one or more .scl files into HCL. Output is written to stdout.`,
 
 		Flags: standardParserParams(),
@@ -68,6 +71,118 @@ func runCommand(stdout io.Writer, stderr io.Writer) climax.Command {
 				}
 
 				fmt.Fprintf(stdout, "/* %s */\n%s\n\n", fileName, parser)
+			}
+
+			return 0
+		},
+	}
+}
+
+func getCommand(stdout io.Writer, stderr io.Writer) climax.Command {
+
+	return climax.Command{
+		Name:  "get",
+		Brief: "Download libraries from verion control",
+		Usage: `[options] <url...>`,
+		Help:  "Get downloads the dependencies specified by the URLs provided, cloning or checking them out from their VCS.",
+
+		Flags: []climax.Flag{
+			{
+				Name:     "output-path",
+				Short:    "o",
+				Usage:    `--output-path /my/vendor/path`,
+				Help:     `The root path under which the dependencies will be stored. Default is "vendor".`,
+				Variable: true,
+			},
+			{
+				Name:  "update",
+				Short: "u",
+				Usage: `--update`,
+				Help:  `Update existing repositories to their newest version`,
+			},
+			{
+				Name:  "verbose",
+				Short: "v",
+				Usage: `--verbose`,
+				Help:  `Print names of repositories as they are acquired or updated`,
+			},
+		},
+
+		Handle: func(ctx climax.Context) int {
+
+			if len(ctx.Args) == 0 {
+				fmt.Fprintf(stderr, "At least one dependency is required. See `sep help get` for syntax")
+				return 1
+			}
+
+			vendorDir := "vendor"
+
+			if outputPath, set := ctx.Get("output-path"); set {
+				vendorDir = outputPath
+			}
+
+			vendorDir, err := filepath.Abs(vendorDir)
+
+			if err != nil {
+				fmt.Fprintln(stderr, "Can't get path:", err.Error())
+				return 1
+			}
+
+			newCount, updatedCount := 0, 0
+
+			for _, dep := range ctx.Args {
+
+				remote := fmt.Sprintf("https://%s", strings.TrimPrefix(dep, "https://"))
+				path := filepath.Join(vendorDir, dep)
+
+				if err := os.MkdirAll(path, os.ModeDir); err != nil {
+					fmt.Fprintf(stderr, "Can't create path %s: %s\n", vendorDir, err.Error())
+					return 1
+				}
+
+				repo, err := vcs.NewRepo(remote, path)
+
+				if err != nil {
+					fmt.Fprintf(stderr, "[%s] Can't create repo: %s", dep, err.Error())
+					continue
+				}
+
+				if repo.CheckLocal() {
+
+					if !ctx.Is("update") {
+						if ctx.Is("verbose") {
+							fmt.Fprintf(stderr, "[%s] already present, run with -u to update\n", dep)
+						}
+						continue
+					}
+
+					if err := repo.Update(); err != nil {
+						fmt.Fprintf(stderr, "[%s] Can't update repo: %s\n", dep, err.Error())
+						continue
+					}
+
+					updatedCount++
+
+					if ctx.Is("verbose") {
+						fmt.Fprintf(stdout, "%s updated successfully\n", dep)
+					}
+
+				} else {
+					if err := repo.Get(); err != nil {
+						fmt.Fprintf(stderr, "[%s] Can't fetch repo: %s\n", dep, err.Error())
+						continue
+					}
+
+					newCount++
+
+					if ctx.Is("verbose") {
+						fmt.Fprintf(stdout, "%s fetched successfully.\n", dep)
+					}
+				}
+			}
+
+			if ctx.Is("verbose") {
+				fmt.Fprintf(stdout, "\nDone. %d dependencie(s) created, %d dependencie(s) updated.\n", newCount, updatedCount)
 			}
 
 			return 0
