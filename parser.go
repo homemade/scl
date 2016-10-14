@@ -2,6 +2,7 @@ package scl
 
 import (
 	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/hashicorp/hcl"
@@ -511,13 +512,16 @@ func (p *parser) parseBodyCall(branch *scannerLine, tkn *tokeniser, scope *scope
 	return p.parseTree(scope.branch.children, tkn, s)
 }
 
-func (p *parser) includeGlob(name string) error {
+func (p *parser) includeGlob(name string, branch *scannerLine) error {
 
 	name = strings.TrimSuffix(strings.Trim(name, `"'`), ".scl") + ".scl"
 
+	vendorPath := []string{filepath.Join(filepath.Dir(branch.file), "vendor")}
+	vendorPath = append(vendorPath, p.includePaths...)
+
 	var paths []string
 
-	for _, ip := range p.includePaths {
+	for _, ip := range vendorPath {
 
 		ipaths, err := p.fs.Glob(ip + "/" + name)
 
@@ -564,7 +568,7 @@ func (p *parser) parseIncludeCall(branch *scannerLine, tokens []token, scope *sc
 
 	for _, v := range args {
 
-		if err := p.includeGlob(v); err != nil {
+		if err := p.includeGlob(v, branch); err != nil {
 			return p.err(branch, err.Error())
 		}
 	}

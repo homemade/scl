@@ -1,0 +1,3 @@
+// vendored.scl is in vendor/vendored.scl; it should be
+// inclued without the vendor prefix.
+include(vendored):

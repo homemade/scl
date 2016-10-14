@@ -180,6 +180,10 @@ var2 = 3`,
 			hcl:      ``,
 		},
 		{
+			fileName: "fixtures/valid/vendor.scl",
+			hcl:      `this = "included from vendor"`,
+		},
+		{
 			fileName: "fixtures/invalid/heredoc.scl",
 			err:      fmt.Errorf("Can't scan fixtures/invalid/heredoc.scl: Heredoc 'DOC' (started line 7) not terminated"),
 		},
