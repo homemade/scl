@@ -1,15 +1,30 @@
-package scl
+package scl_test
 
 import (
 	"fmt"
 	"log"
 
 	"github.com/hashicorp/hcl"
+
+	"bitbucket.org/homemade/scl"
 )
 
 func Example_basic() {
 
-	parser, err := NewParser(NewDiskSystem())
+	myConfigObject := struct {
+		SomeVariable int `hcl:"some_variable"`
+	}{}
+
+	if err := scl.DecodeFile(&myConfigObject, "/path/to/a/config/file.scl"); err != nil {
+		// handle error
+	}
+
+	// myConfigObject is now populated!
+}
+
+func ExampleParser() {
+
+	parser, err := scl.NewParser(scl.NewDiskSystem())
 
 	if err != nil {
 		log.Fatal(err)
@@ -25,9 +40,9 @@ func Example_basic() {
 	fmt.Println("myfile.scl as HCL:", parser.String())
 }
 
-func Example_hcl() {
+func Example_parser() {
 
-	parser, err := NewParser(NewDiskSystem())
+	parser, err := scl.NewParser(scl.NewDiskSystem())
 
 	if err != nil {
 		log.Fatal(err)
@@ -50,7 +65,7 @@ func Example_hcl() {
 
 func ExampleParser_variables() {
 
-	parser, err := NewParser(NewDiskSystem())
+	parser, err := scl.NewParser(scl.NewDiskSystem())
 
 	if err != nil {
 		log.Fatal(err)
@@ -67,7 +82,7 @@ func ExampleParser_variables() {
 
 func ExampleParser_includePaths() {
 
-	parser, err := NewParser(NewDiskSystem())
+	parser, err := scl.NewParser(scl.NewDiskSystem())
 
 	if err != nil {
 		log.Fatal(err)
@@ -84,7 +99,7 @@ func ExampleParser_includePaths() {
 
 func ExampleParser_documentation() {
 
-	parser, err := NewParser(NewDiskSystem())
+	parser, err := scl.NewParser(scl.NewDiskSystem())
 
 	if err != nil {
 		log.Fatal(err)
