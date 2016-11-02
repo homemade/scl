@@ -110,6 +110,12 @@ EOF
 			hcl: `outer "normal assignment" {
   inner1 = "hello"
   inner2 = "hello world"
+  inner3 = <<EOF
+{
+	"a": "b"
+}
+EOF
+
 }
 outer "scope-specific re-assignment should affect parent scope" {
   inner = "world hello"
