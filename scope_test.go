@@ -36,6 +36,14 @@ func Test_AValidScopeCanInterpolateVariables(t *testing.T) {
 				"one": "value1",
 				"two": "value2",
 			},
+			literal: `${one}_${two}`,
+			result:  `value1_value2`,
+		},
+		{
+			variables: map[string]string{
+				"one": "value1",
+				"two": "value2",
+			},
 			literal: "$one is $$two",
 			result:  "value1 is $$two",
 		},

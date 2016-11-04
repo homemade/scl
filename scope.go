@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var inlineVariableMatcher = regexp.MustCompile(`([^$\\]|^)\$([a-zA-Z0-9_]+)`)
+var inlineVariableMatcher = regexp.MustCompile(`(?:[^$\\]|^)\$(\w+|\{\w+\})`)
 
 type variable struct {
 	name  string
@@ -106,6 +106,8 @@ func (s *scope) interpolateLiteral(literal string) (outp string, err error) {
 			replacement = string(match[2:])
 			prefix = string(match[0])
 		}
+
+		replacement = strings.Trim(replacement, "{}")
 
 		if v := s.variable(replacement); v != "" {
 			return prefix + v
