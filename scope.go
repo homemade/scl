@@ -2,11 +2,8 @@ package scl
 
 import (
 	"fmt"
-	"regexp"
-	"strings"
+	"unicode"
 )
-
-var inlineVariableMatcher = regexp.MustCompile(`([^$\\]|^)\$([a-zA-Z0-9_]+)`)
 
 type variable struct {
 	name  string
@@ -91,34 +88,172 @@ func (s *scope) mixin(name string) (*mixin, error) {
 
 func (s *scope) interpolateLiteral(literal string) (outp string, err error) {
 
-	outp = inlineVariableMatcher.ReplaceAllStringFunc(literal, func(match string) string {
+	isVariableChar := func(c rune) bool {
+		return unicode.IsLetter(c) || unicode.IsDigit(c) || c == '_'
+	}
 
-		if err != nil {
-			return match
+	unknownVariable := func(name []byte) {
+		err = fmt.Errorf("Unknown variable '$%s'", name)
+	}
+
+	unfinishedVariable := func(name []byte) {
+		err = fmt.Errorf("Expecting closing right brace in variable ${%s}", name)
+	}
+
+	result := func() (result []byte) {
+
+		var (
+			backSlash    = '\\'
+			dollar       = '$'
+			leftBrace    = '{'
+			rightBrace   = '}'
+			backtick     = '`'
+			slashEscaped = false
+
+			variableStarted        = false
+			variableIsBraceEscaped = false
+			variable               = []byte{}
+			literalStarted         = false
+		)
+
+		for _, c := range []byte(literal) {
+
+			if literalStarted {
+
+				if rune(c) == backtick {
+					literalStarted = false
+					continue
+				}
+
+				result = append(result, c)
+				continue
+			}
+
+			if variableStarted {
+
+				if len(variable) == 0 {
+
+					// If the first character is a dollar, then this
+					// is a $$var escape
+					if rune(c) == dollar {
+						variableStarted = false
+						variableIsBraceEscaped = false
+
+						// Write out two dollars – one for the skipped var
+						// signifier, and the current one
+						result = append(result, byte(dollar), byte(dollar))
+						continue
+					}
+
+					// If the first character is a curl brace,
+					// it's the start of a ${var} syntax
+					if !variableIsBraceEscaped {
+						if rune(c) == leftBrace {
+							variableIsBraceEscaped = true
+							continue
+						} else {
+							variableIsBraceEscaped = false
+						}
+					}
+				}
+
+				// If this is a valid variable character,
+				// add it to the variable building
+				if isVariableChar(rune(c)) {
+					variable = append(variable, c)
+					continue
+				}
+
+				// If the variable is zero length, then it's a dollar literal
+				if len(variable) == 0 {
+					variableStarted = false
+					variableIsBraceEscaped = false
+					result = append(result, byte(dollar), c)
+					continue
+				}
+
+				// Brace-escaped variables must end with a closing brace
+				if variableIsBraceEscaped {
+					if rune(c) != rightBrace {
+						unfinishedVariable(variable)
+						return
+					}
+				}
+
+				writeOutput := !variableIsBraceEscaped
+
+				// The variable has ended
+				variableStarted = false
+				variableIsBraceEscaped = false
+
+				// The variable is complete; look up its value
+				if replacement := s.variable(string(variable)); replacement != "" {
+					result = append(result, []byte(replacement)...)
+
+					if writeOutput {
+						result = append(result, c)
+					}
+
+					continue
+				}
+
+				unknownVariable(variable)
+				return
+			}
+
+			if slashEscaped {
+				result = append(result, c)
+				slashEscaped = false
+				continue
+			}
+
+			switch rune(c) {
+			case backSlash:
+				slashEscaped = true
+				continue
+
+			case dollar:
+				variableStarted, variable = true, []byte{}
+				continue
+
+			case backtick:
+				literalStarted = true
+				continue
+			}
+
+			result = append(result, c)
+
+			slashEscaped = false
 		}
 
-		replacement := ""
-		prefix := ""
-
-		if match[0] == '$' {
-			replacement = string(match[1:])
-		} else {
-			replacement = string(match[2:])
-			prefix = string(match[0])
+		if literalStarted {
+			err = fmt.Errorf("Unterminated backtick literal")
+			return
 		}
 
-		if v := s.variable(replacement); v != "" {
-			return prefix + v
+		// If the last character is a slash, add it
+		if slashEscaped {
+			result = append(result, byte(backSlash))
 		}
 
-		err = fmt.Errorf("Unknown variable '$%s'", replacement)
+		// The string ended mid-variable, so add it if possible
+		if variableStarted {
 
-		return match
-	})
+			if variableIsBraceEscaped {
+				unfinishedVariable(variable)
+				return
+			} else if replacement := s.variable(string(variable)); replacement != "" {
+				result = append(result, []byte(replacement)...)
+			} else {
+				unknownVariable(variable)
+				return
+			}
+		}
 
-	// Variables with multiple leading dollars are not matched as variables.
-	// To fix this, dollar characters preceded by backslashes are escaped.
-	outp = strings.Replace(outp, `\$`, `$`, -1)
+		return
+	}()
+
+	outp = string(result)
 
 	return
 }
