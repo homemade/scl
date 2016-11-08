@@ -2,11 +2,8 @@ package scl
 
 import (
 	"fmt"
-	"regexp"
 	"unicode"
 )
-
-var inlineVariableMatcher = regexp.MustCompile(`(?:[^$\\]|^)\$(\w+|\{\w+\})`)
 
 type variable struct {
 	name  string
