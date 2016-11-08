@@ -14,7 +14,7 @@ import (
 	"github.com/aryann/difflib"
 	"github.com/tucnak/climax"
 
-	"bitbucket.org/homemade/scl"
+	"github.com/homemade/scl"
 )
 
 func main() {

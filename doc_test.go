@@ -6,7 +6,7 @@ import (
 
 	"github.com/hashicorp/hcl"
 
-	"bitbucket.org/homemade/scl"
+	"github.com/homemade/scl"
 )
 
 func Example_basic() {
