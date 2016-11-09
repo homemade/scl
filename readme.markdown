@@ -1,4 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/homemade/scl?status.svg)](https://godoc.org/github.com/homemade/scl)
+[![GoDoc](https://godoc.org/github.com/homemade/scl?status.svg)](https://godoc.org/github.com/homemade/scl) [![Language reference](https://img.shields.io/badge/language-reference-736caf.svg)](https://github.com/homemade/scl/wiki)
 
 ## Sepia Configuration Language
 
