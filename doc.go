@@ -12,8 +12,8 @@ scoped, natural variables.  The language is designed to accompany Sepia (and,
 specifically, Sepia plugins) but it's a general purpose language, and can be
 used for pretty much any configurational purpose.
 
-Full documenation for SCL, including a language specification, tutorials and
-examples, is available at http://sepia-docs.us-east-1.elasticbeanstalk.com/scl.
+Full documenation for the language itself, including a language specification,
+tutorials and examples, is available at https://github.com/homemade/scl/wiki.
 */
 package scl
 
