@@ -141,7 +141,7 @@ func (s *scope) interpolateLiteral(literal string) (outp string, err error) {
 
 						// Write out two dollars – one for the skipped var
 						// signifier, and the current one
-						result = append(result, byte(dollar), byte(dollar))
+						result = append(result, byte(dollar))
 						continue
 					}
 

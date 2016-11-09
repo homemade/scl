@@ -69,7 +69,7 @@ func Test_AValidScopeCanInterpolateVariables(t *testing.T) {
 				"two": "value2",
 			},
 			literal: "$one is $$two",
-			result:  "value1 is $$two",
+			result:  "value1 is $two",
 		},
 		{
 			variables: map[string]string{
