@@ -18,6 +18,12 @@ Assuming you have Go installed, the package and CLI tool can be fetched in the u
 $ go get -u bitbucket.org/homemade/scl/...
 ```
 
+## Contributions
+
+This is fairly new software that has been tested intensively over a fairly narrow range of functions. Minor bugs are expected! If you have any suggestions or feature requests [please open an issue](https://github.com/homemade/scl/issues/new). Pull requests for bug fixes or uncontroversial improvements are appreciated. 
+
+We're currently working on standard libraries for Terraform and Hugo. If you build an SCL library for anything else, please let us know!
+
 ## Using SCL in your application
 
 SCL is built on top of HCL, and the fundamental procedure for using it is the more or less the same: SCL code is decoded into a Go struct, informed by `hcl` tags on the struct's fields. A trivially simple example is as follows:
