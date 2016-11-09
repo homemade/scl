@@ -1,4 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/homemade/scl?status.svg)](https://godoc.org/github.com/homemade/scl) [![Language reference](https://img.shields.io/badge/language-reference-736caf.svg)](https://github.com/homemade/scl/wiki)
+[![Build Status](https://travis-ci.org/homemade/scl.svg?branch=master)](https://travis-ci.org/homemade/scl) [![Coverage Status](https://coveralls.io/repos/github/homemade/scl/badge.svg?branch=master)](https://coveralls.io/github/homemade/scl?branch=master) [![GoDoc](https://godoc.org/github.com/homemade/scl?status.svg)](https://godoc.org/github.com/homemade/scl) [![Language reference](https://img.shields.io/badge/language-reference-736caf.svg)](https://github.com/homemade/scl/wiki)
 
 ## Sepia Configuration Language
 
