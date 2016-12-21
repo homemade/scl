@@ -15,7 +15,7 @@ This readme is concerned with the technical implementation of the Go package and
 Assuming you have Go installed, the package and CLI tool can be fetched in the usual way:
 
 ```
-$ go get -u bitbucket.org/homemade/scl/...
+$ go get -u github.com/homemade/scl/...
 ```
 
 ## Contributions
