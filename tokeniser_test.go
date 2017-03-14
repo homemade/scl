@@ -47,6 +47,18 @@ func Test_ATokeniserCanStripCommentsFromALine(t *testing.T) {
 			line:   newLine("test.scl", 1, 0, `'not / a // comment'`),
 			result: `'not / a // comment'`,
 		},
+		{
+			line:   newLine("test.scl", 1, 0, `"'Nested quote' http://link" http://link`),
+			result: `"'Nested quote' http://link" http:`,
+		},
+		{
+			line:   newLine("test.scl", 1, 0, `"'Nested quote' http://link http://link`),
+			result: `"'Nested quote' http://link http://link`,
+		},
+		{
+			line:   newLine("test.scl", 1, 0, `“'Nested quote' http://link http://link`),
+			result: `“'Nested quote' http:`,
+		},
 	} {
 		t.Logf("Cycle %d", cycle)
 
